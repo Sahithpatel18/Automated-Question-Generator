@@ -38,11 +38,13 @@ export const QuestionDisplay: React.FC<QuestionDisplayProps> = ({
     
     setIsCorrect(correct);
     setIsAnswered(true);
-    
-    // Delay before moving to next question
-    setTimeout(() => {
-      onAnswerSubmit(question.id, selectedAnswer);
-    }, 2000);
+  };
+
+  const handleNext = () => {
+    onAnswerSubmit(question.id, selectedAnswer);
+    setSelectedAnswer('');
+    setIsAnswered(false);
+    setIsCorrect(false);
   };
 
   const renderQuestionInput = () => {
@@ -238,6 +240,18 @@ export const QuestionDisplay: React.FC<QuestionDisplayProps> = ({
               </h4>
               <p className="text-sm">{question.explanation}</p>
             </div>
+          )}
+
+          {/* ✅ Next / Finish Button */}
+          {isAnswered && (
+            <Button
+              onClick={handleNext}
+              variant="gradient"
+              size="lg"
+              className="w-full"
+            >
+              {questionNumber === totalQuestions ? 'Finish ✅' : 'Next →'}
+            </Button>
           )}
         </CardContent>
       </Card>

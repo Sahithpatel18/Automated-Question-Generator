@@ -7,8 +7,10 @@ import { LoadingScreen } from './LoadingScreen';
 import { ResultsScreen } from './ResultsScreen';
 import { QuizSettings, Question, QuizState } from '@/types/question';
 import { generateQuestions } from '@/lib/questionGenerator';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 
-type Screen = 'subject' | 'difficulty' | 'type' | 'loading' | 'question' | 'results';
+type Screen = 'subject' | 'difficulty' | 'type' | 'count' | 'loading' | 'question' | 'results';
 
 const QuestionGenerator = () => {
   const [currentScreen, setCurrentScreen] = useState<Screen>('subject');
@@ -22,6 +24,8 @@ const QuestionGenerator = () => {
     isComplete: false,
   });
 
+  const [questionCount, setQuestionCount] = useState(5); // default number
+
   const handleSubjectSelect = (subject: QuizSettings['subject']) => {
     setQuizSettings(prev => ({ ...prev, subject }));
     setCurrentScreen('difficulty');
@@ -33,7 +37,12 @@ const QuestionGenerator = () => {
   };
 
   const handleQuestionTypeSelect = (questionType: QuizSettings['questionType']) => {
-    const finalSettings = { ...quizSettings, questionType, questionCount: 5 } as QuizSettings;
+    setQuizSettings(prev => ({ ...prev, questionType }));
+    setCurrentScreen('count'); // 👉 new screen for question count
+  };
+
+  const handleQuestionCountConfirm = () => {
+    const finalSettings = { ...quizSettings, questionCount } as QuizSettings;
     setQuizSettings(finalSettings);
     setCurrentScreen('loading');
     
@@ -100,6 +109,26 @@ const QuestionGenerator = () => {
             onBack={() => setCurrentScreen('difficulty')}
             settings={quizSettings as { subject: string; difficulty: string }}
           />
+        );
+      case 'count':
+        return (
+          <div className="flex flex-col items-center justify-center h-screen space-y-6">
+            <h2 className="text-2xl font-bold">How many questions?</h2>
+            <Input
+              type="number"
+              min={1}
+              max={50}
+              value={questionCount}
+              onChange={(e) => setQuestionCount(Number(e.target.value))}
+              className="w-32 text-center"
+            />
+            <Button onClick={handleQuestionCountConfirm} size="lg">
+              Start Quiz
+            </Button>
+            <Button variant="ghost" onClick={() => setCurrentScreen('type')}>
+              Back
+            </Button>
+          </div>
         );
       case 'loading':
         return <LoadingScreen settings={quizSettings as QuizSettings} />;
