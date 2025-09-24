@@ -66,7 +66,9 @@ export const QuestionTypeSelector: React.FC<QuestionTypeSelectorProps> = ({
           <p className="text-xl text-muted-foreground mb-2">
             Choose your preferred question type for{' '}
             <span className="font-semibold text-primary capitalize">{settings.difficulty}</span>{' '}
-            <span className="font-semibold text-primary capitalize">{settings.subject}</span>{' '}
+            <span className="font-semibold text-primary">{settings.subject.split('-').map(word => 
+              word.charAt(0).toUpperCase() + word.slice(1)
+            ).join(' ')}</span>{' '}
             questions
           </p>
           <div className="inline-flex items-center px-4 py-2 bg-secondary rounded-full text-sm text-muted-foreground">

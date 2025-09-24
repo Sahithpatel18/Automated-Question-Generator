@@ -37,12 +37,10 @@ const difficulties = [
   },
 ];
 
-const subjectTitles: Record<Subject, string> = {
-  mathematics: 'Mathematics',
-  science: 'Science',
-  history: 'History',
-  english: 'English',
-  geography: 'Geography',
+const formatSubjectTitle = (subject: Subject): string => {
+  return subject.split('-').map(word => 
+    word.charAt(0).toUpperCase() + word.slice(1)
+  ).join(' ');
 };
 
 export const DifficultySelector: React.FC<DifficultySelectorProps> = ({ 
@@ -70,7 +68,7 @@ export const DifficultySelector: React.FC<DifficultySelectorProps> = ({
             Choose Difficulty Level
           </h1>
           <p className="text-xl text-muted-foreground">
-            Select the appropriate difficulty for your <span className="font-semibold text-primary">{subjectTitles[selectedSubject]}</span> questions
+            Select the appropriate difficulty for your <span className="font-semibold text-primary">{formatSubjectTitle(selectedSubject)}</span> questions
           </p>
         </div>
 

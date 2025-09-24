@@ -1,6 +1,6 @@
 export type QuestionType = 'multiple-choice' | 'true-false' | 'fill-blank' | 'short-answer';
 export type DifficultyLevel = 'easy' | 'medium' | 'hard';
-export type Subject = 'mathematics' | 'science' | 'history' | 'english' | 'geography';
+export type Subject = string; // Allow any subject/theory
 
 export interface Question {
   id: string;
